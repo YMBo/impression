@@ -8,7 +8,6 @@
           <Icon class="bar-icon" type="ios-remove" />
         </span>
         <span class="handle-icon-box" @click="maxS">
-          {{isMax}}
           <Icon v-if="isMax" type="ios-photos-outline" />
           <Icon v-else style="font-size:14px" class="bar-icon" type="ios-square-outline" />
         </span>
@@ -22,29 +21,29 @@
 </template>
 
 <script>
-import { remote } from 'electron'
-import { screenMax, screenMin, screenClose } from 'ROOT/event/app.js'
+import { remote } from "electron";
+import { screenMax, screenMin, screenClose } from "ROOT/event/app.js";
 export default {
-  name: 'impression',
+  name: "impression",
   data() {
     return {
       os: process.platform,
       isMax: remote.getCurrentWindow().isMaximized()
-    }
+    };
   },
   mounted() {},
   methods: {
     maxS() {
-      this.isMax = screenMax()
+      this.isMax = screenMax();
     },
     minS() {
-      screenMin()
+      screenMin();
     },
     closeS() {
-      screenClose()
+      screenClose();
     }
   }
-}
+};
 </script>
 
 <style lang='less'>

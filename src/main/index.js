@@ -36,8 +36,8 @@ function createWindow() {
         title: '印象时刻',
         // 毛玻璃效果，仅macOS有效
         vibrancy: 'ultra-dark',
-        // 窗口透明
-        transparent: true,
+        // 窗口透明,如果设置了true，那么在win32环境下，isMaximized()总返回false
+        transparent: false,
         titleBarStyle: 'hidden',
         backgroundColor: '#fff',
         webPreferences: {
