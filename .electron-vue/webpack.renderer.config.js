@@ -111,8 +111,7 @@ let rendererConfig = {
                 removeComments: true
             },
             nodeModules: process.env.NODE_ENV !== 'production' ?
-                path.resolve(__dirname, '../node_modules') :
-                false
+                path.resolve(__dirname, '../node_modules') : false
         }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
@@ -125,6 +124,7 @@ let rendererConfig = {
     resolve: {
         alias: {
             '@': path.join(__dirname, '../src/renderer'),
+            'ROOT': path.join(__dirname, '../src'),
             'vue$': 'vue/dist/vue.esm.js'
         },
         extensions: ['.js', '.vue', '.json', '.css', '.node']

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, BrowserView } from 'electron'
 
 
 /**
@@ -19,35 +19,34 @@ function createWindow() {
      * Initial window options
      */
     mainWindow = new BrowserWindow({
-            // 启动时是否显示
-            show: false,
-            useContentSize: true,
-            // 窗口在屏幕居中
-            center: true,
-            // 窗口是否可以改变尺寸.
-            resizable: true,
-            width: 1000,
-            height: 600,
-            minHeight: 600,
-            minWidth: 1000,
-            // 创建一个没有顶部工具栏，没有border窗口
-            frame: false,
-            // 即刻相册
-            title: '印象时刻',
-            // 毛玻璃效果，仅macOS有效
-            vibrancy: 'ultra-dark',
-            // 窗口透明
-            transparent: true,
-            titleBarStyle: 'hidden',
-            // backgroundColor: 'pink',
-            webPreferences: {
-                devTools: true,
-                backgroundThrottling: false,
-                // nodeIntegration: true,
-                // nodeIntegrationInWorker: true,
-            }
-        })
-        // console.log(process)
+        // 启动时是否显示
+        show: false,
+        useContentSize: true,
+        // 窗口在屏幕居中
+        center: true,
+        // 窗口是否可以改变尺寸.
+        resizable: true,
+        width: 1000,
+        height: 600,
+        minHeight: 600,
+        minWidth: 1000,
+        // 创建一个没有顶部工具栏，没有border窗口
+        frame: false,
+        // 即刻相册
+        title: '印象时刻',
+        // 毛玻璃效果，仅macOS有效
+        vibrancy: 'ultra-dark',
+        // 窗口透明
+        transparent: true,
+        titleBarStyle: 'hidden',
+        backgroundColor: '#fff',
+        webPreferences: {
+            devTools: true,
+            backgroundThrottling: false,
+            // nodeIntegration: true,
+            // nodeIntegrationInWorker: true,
+        }
+    })
     mainWindow.loadURL(winURL)
 
     mainWindow.on('closed', () => {

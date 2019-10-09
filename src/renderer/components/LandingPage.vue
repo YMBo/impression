@@ -32,7 +32,7 @@ body {
 }
 
 #wrapper {
-  background: linear-gradient(to right, #1888a7 10%, #03265d);
+  /* background: linear-gradient(to right, #1888a7 10%, #03265d); */
   /* background: rgba(0, 0, 0, 0.5); */
   height: 100vh;
   padding: 60px 80px;
