@@ -27,7 +27,8 @@
             "dist/electron/**/*"
         ],
         "dmg": {
-            "contents": [{
+            "contents": [
+                {
                     "x": 410,
                     "y": 150,
                     "type": "link",
@@ -52,7 +53,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
-        "iview": "^4.0.0-rc.4",
+        "font-awesome": "^4.7.0",
         "vue": "^2.5.16",
         "vue-electron": "^1.0.6",
         "vue-router": "^3.0.1",
@@ -87,6 +88,7 @@
         "multispinner": "^0.2.1",
         "node-loader": "^0.6.0",
         "style-loader": "^0.21.0",
+        "svg-sprite-loader": "^4.1.6",
         "url-loader": "^1.0.1",
         "vue-html-loader": "^1.2.4",
         "vue-loader": "^15.2.4",

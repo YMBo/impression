@@ -76,6 +76,14 @@ let rendererConfig = {
                 }
             },
             {
+                test: /\.svg$/,
+                loader: 'svg-sprite-loader',
+                include: path.join(__dirname, '../src/svg'),
+                options: {
+                    symbolId: 'icon-[name]'
+                },
+            },
+            {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
