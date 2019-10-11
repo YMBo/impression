@@ -3,18 +3,15 @@
     <div class="handle-bar" v-if="os === 'darwin'">
       <!-- 如果是windows系统 就加上模拟的操作按钮-->
       <span class="handle-icon-box" @click="minS">
-        <!-- <i class="fa fa-window-restore" aria-hidden="true"></i> -->
-        <svg-icon iconClass="close"></svg-icon>
-        <!-- <Icon class="bar-icon" type="ios-remove" /> -->
+        <svg-icon iconClass="min"></svg-icon>
       </span>
       <span class="handle-icon-box" @click="maxS">
-        <!-- <i class="fa fa-clone" aria-hidden="true"></i> -->
-        <!-- <Icon v-if="isMax" type="ios-photos-outline" />
-        <Icon v-else style="font-size:14px" class="bar-icon" type="ios-square-outline" />-->
+        <svg-icon iconClass="max2" v-if="isMax"></svg-icon>
+        <svg-icon iconClass="max" v-else></svg-icon>
       </span>
-      <!-- <span class="red handle-icon-box" @click="closeS">
-        <Icon class="bar-icon" type="ios-close" />
-      </span>-->
+      <span class="red handle-icon-box" @click="closeS">
+        <svg-icon iconClass="close" style="width: 14px;"></svg-icon>
+      </span>
     </div>
   </div>
 </template>
@@ -32,6 +29,7 @@ export default {
   methods: {
     maxS() {
       this.isMax = screenMax()
+      console.log(this.isMax)
     },
     minS() {
       screenMin()

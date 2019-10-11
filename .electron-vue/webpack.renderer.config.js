@@ -20,7 +20,6 @@ const { VueLoaderPlugin } = require('vue-loader')
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
 let whiteListedModules = ['vue']
-
 let rendererConfig = {
     devtool: '#cheap-module-eval-source-map',
     entry: {
@@ -67,6 +66,7 @@ let rendererConfig = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                exclude: [path.resolve(__dirname, '../src/renderer/svg')],
                 use: {
                     loader: 'url-loader',
                     query: {
@@ -78,7 +78,7 @@ let rendererConfig = {
             {
                 test: /\.svg$/,
                 loader: 'svg-sprite-loader',
-                include: path.join(__dirname, '../src/svg'),
+                include: [path.resolve(__dirname, '../src/renderer/svg')],
                 options: {
                     symbolId: 'icon-[name]'
                 },

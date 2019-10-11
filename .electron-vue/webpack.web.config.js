@@ -51,6 +51,7 @@ let webConfig = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                exclude: [path.resolve(__dirname, '../src/svg')],
                 use: {
                     loader: 'url-loader',
                     query: {
@@ -62,7 +63,7 @@ let webConfig = {
             {
                 test: /\.svg$/,
                 loader: 'svg-sprite-loader',
-                include: path.join(__dirname, '../src/svg'),
+                include: [path.resolve(__dirname, '../src/svg')],
                 options: {
                     symbolId: 'icon-[name]'
                 },
