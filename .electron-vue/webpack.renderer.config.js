@@ -64,6 +64,7 @@ let rendererConfig = {
                     }
                 }
             },
+            // exclude
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 exclude: [path.resolve(__dirname, '../src/renderer/svg')],
