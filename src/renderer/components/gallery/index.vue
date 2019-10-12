@@ -33,13 +33,14 @@ export default {
   height: 100%;
   overflow: auto;
   font-family: 'Microsoft YaHei';
+  background: rgba(255, 255, 255, 1);
   .gap {
     margin-bottom: 10px;
   }
   .timeAddress {
     position: sticky;
     top: 0;
-    background: rgba(223, 223, 223, 0.9);
+    background: rgba(223, 223, 223, 0.8);
     padding: 4px 10px;
     width: 100%;
     display: flex;

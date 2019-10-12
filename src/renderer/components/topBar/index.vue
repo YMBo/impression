@@ -3,14 +3,14 @@
     <div class="handle-bar" v-if="os === 'darwin'">
       <!-- 如果是windows系统 就加上模拟的操作按钮-->
       <span class="handle-icon-box" @click="minS">
-        <svg-icon iconClass="min"></svg-icon>
+        <svg-icon class="color" iconClass="min"></svg-icon>
       </span>
       <span class="handle-icon-box" @click="maxS">
-        <svg-icon iconClass="max2" v-if="isMax"></svg-icon>
-        <svg-icon iconClass="max" v-else></svg-icon>
+        <svg-icon class="color" iconClass="max2" v-if="isMax"></svg-icon>
+        <svg-icon class="color" iconClass="max" v-else></svg-icon>
       </span>
       <span class="red handle-icon-box" @click="closeS">
-        <svg-icon iconClass="close" style="width: 14px;"></svg-icon>
+        <svg-icon class="color" iconClass="close" style="width: 14px;"></svg-icon>
       </span>
     </div>
   </div>
@@ -78,11 +78,13 @@ export default {
     overflow: hidden;
     transition: all 0.4s;
     -webkit-app-region: no-drag;
-
+    .color {
+      fill: #000;
+    }
     &:hover {
       background: rgba(0, 0, 0, 0.3);
-      > i {
-        color: #fff;
+      > .color {
+        fill: #fff;
       }
     }
     &.red:hover {
