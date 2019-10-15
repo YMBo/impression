@@ -11,5 +11,10 @@ export default new Router({
             name: 'gallery',
             component: require('@/components/gallery').default
         },
+        {
+            path: '/setting',
+            name: 'setting',
+            component: require('@/components/setting').default
+        },
     ]
 })

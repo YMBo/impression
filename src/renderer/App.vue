@@ -8,7 +8,9 @@
         <span class="bar"></span>
       </aside>
       <div class="content">
-        <router-view></router-view>
+        <transition name="switch">
+          <router-view></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -33,6 +35,24 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+
+.switch-enter-active {
+  animation: switch-in 1s;
+}
+.switch-leave-active {
+  animation: switch-in 1s reverse;
+}
+@keyframes switch-in {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateZ(45deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
 </style>
 <style lang='less' scoped>
 .main {
@@ -41,6 +61,7 @@ export default {
 }
 .content {
   width: 100%;
+  -webkit-perspective: 1000;
 }
 #app {
   user-select: none;

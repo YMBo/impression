@@ -1,11 +1,15 @@
 <template>
   <ul ref="aside" class="menu" style="height:100%;text-align:center" @click="move">
-    <span ref="bar" class="mover-bar" :style="`top:${top}px`"></span>
-    <li>
-      <svg-icon class="setRect" iconClass="home"></svg-icon>
+    <span ref="bar" class="mover-bar light" :style="`top:${top}px`"></span>
+    <li class="current">
+      <router-link class="rectMax" :to="{ name: 'gallery'}">
+        <svg-icon class="setRect" iconClass="home"></svg-icon>
+      </router-link>
     </li>
     <li>
-      <svg-icon class="setRect" iconClass="setting"></svg-icon>
+      <router-link class="rectMax" :to="{ name: 'setting'}">
+        <svg-icon class="setRect" iconClass="setting"></svg-icon>
+      </router-link>
     </li>
   </ul>
 </template>
@@ -24,14 +28,25 @@ export default {
   },
   methods: {
     move(event) {
-      if (event.target.nodeName == 'LI') {
+      let eventNode = this.findParent(event.target, this.$refs['aside'], 'LI')
+      if (eventNode) {
         this.$refs['bar'].classList.remove('light')
-        let $ = event.target
+        let $ = eventNode
         this.allLi.forEach(e => e.classList.remove('current'))
-        this.top = event.target.offsetTop
+        this.top = $.offsetTop
         $.classList.add('current')
         this.$refs['bar'].classList.add('light')
       }
+    },
+    findParent(current, parent, targetName) {
+      let cb = current
+      while (cb !== parent) {
+        if (cb.nodeName == targetName) {
+          return cb
+        }
+        cb = cb.parentNode
+      }
+      return false
     }
   }
 }
@@ -75,7 +90,7 @@ export default {
     animation: light 0.5s 0.3s ease-in forwards;
   }
   > li.current {
-    > .setRect {
+    .setRect {
       transition: all 3s;
       fill: #3899ff;
     }
@@ -87,13 +102,20 @@ export default {
     font-size: 13px;
     color: #fff;
     display: flex;
-    align-items: center;
-    justify-content: center;
-
+    .rectMax {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .setRect {
       width: 25px;
       height: 25px;
       fill: #5d5d5d;
+      .none();
+    }
+    .none {
       pointer-events: none;
     }
   }
