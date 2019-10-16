@@ -1,5 +1,5 @@
 <template>
-  <div>设置</div>
+  <div class="bg">设置</div>
 </template>
 <script>
 export default {
@@ -7,4 +7,8 @@ export default {
 }
 </script>
 <style scoped>
+.bg {
+  background: pink;
+  height: 100%;
+}
 </style>

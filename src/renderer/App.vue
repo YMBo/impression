@@ -37,20 +37,40 @@ export default {
 }
 
 .switch-enter-active {
-  animation: switch-in 1s;
+  animation: switch-in 0.5s ease-out;
 }
 .switch-leave-active {
-  animation: switch-in 1s reverse;
+  animation: switch-out 0.5s ease-out;
 }
 @keyframes switch-in {
   0% {
-    transform: rotateX(0);
+    transform: translateY(-1000px) scale(0.8);
+    opacity: 0;
   }
   50% {
-    transform: rotateZ(45deg);
+    transform: translateY(0) scale(0.8);
   }
   100% {
-    transform: rotateX(0);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes switch-out {
+  0% {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    opacity: 1;
+  }
+  /* 50% {
+    transform: scale(0.8);
+  } */
+  100% {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transform: scale(0.8);
+    opacity: 0;
   }
 }
 </style>
@@ -61,6 +81,7 @@ export default {
 }
 .content {
   width: 100%;
+  overflow: hidden;
   -webkit-perspective: 1000;
 }
 #app {

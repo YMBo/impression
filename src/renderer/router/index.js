@@ -9,12 +9,12 @@ export default new Router({
         {
             path: '/gallery',
             name: 'gallery',
-            component: require('@/components/gallery').default
+            component: require('@/page/gallery').default
         },
         {
             path: '/setting',
             name: 'setting',
-            component: require('@/components/setting').default
+            component: require('@/page/setting').default
         },
     ]
 })

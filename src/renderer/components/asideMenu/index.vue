@@ -7,6 +7,11 @@
       </router-link>
     </li>
     <li>
+      <router-link class="rectMax" :to="{ name: 'update'}">
+        <svg-icon class="setRect" iconClass="update"></svg-icon>
+      </router-link>
+    </li>
+    <li>
       <router-link class="rectMax" :to="{ name: 'setting'}">
         <svg-icon class="setRect" iconClass="setting"></svg-icon>
       </router-link>
@@ -75,7 +80,7 @@ export default {
     height: 50px;
     background: #3899ff;
     border-radius: 20px;
-    transition: all 0.3s;
+    transition: all 0.3s ease-out;
     &::after {
       content: '';
       position: absolute;
