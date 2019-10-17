@@ -1,6 +1,6 @@
 <template>
   <div class="fake-title-bar">
-    <div class="handle-bar" v-if="os === 'darwin'">
+    <div class="handle-bar" v-if="os === 'win32'">
       <!-- 如果是windows系统 就加上模拟的操作按钮-->
       <span class="handle-icon-box" @click="minS">
         <svg-icon class="color" iconClass="min"></svg-icon>
@@ -16,29 +16,29 @@
   </div>
 </template>
 <script>
-import { remote } from 'electron'
-import { screenMax, screenMin, screenClose } from 'ROOT/event/app.js'
+import { remote } from "electron";
+import { screenMax, screenMin, screenClose } from "ROOT/event/app.js";
 export default {
-  name: 'top-bar',
+  name: "top-bar",
   data() {
     return {
       os: process.platform,
       isMax: remote.getCurrentWindow().isMaximized()
-    }
+    };
   },
   methods: {
     maxS() {
-      this.isMax = screenMax()
-      console.log(this.isMax)
+      this.isMax = screenMax();
+      console.log(this.isMax);
     },
     minS() {
-      screenMin()
+      screenMin();
     },
     closeS() {
-      screenClose()
+      screenClose();
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .bar-icon {
@@ -49,17 +49,19 @@ export default {
 .fake-title-bar {
   -webkit-app-region: drag;
   text-align: center;
-  color: #eee;
   position: relative;
   width: 100%;
   height: 30px;
   line-height: 30px;
+  background: url("../../../photos/topbar.jpg");
+  background-size: cover;
 }
 .handle-bar {
   position: absolute;
   right: 0;
   top: 0;
   display: flex;
+  justify-content: flex-end;
   height: 100%;
   width: 90px;
   align-items: center;
@@ -69,8 +71,8 @@ export default {
     color: #fff;
   }
   .handle-icon-box {
-    width: 30px;
-    height: 100%;
+    width: 27px;
+    height: 27px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -17,20 +17,19 @@
 </template>
 
 <script>
-// import photo from 'ROOT/photos/bg.jpg'
-import TopBar from '@/components/topBar'
-import AsideMenu from '@/components/asideMenu'
+import TopBar from "@/components/topBar";
+import AsideMenu from "@/components/asideMenu";
 export default {
-  name: 'impression',
+  name: "impression",
   components: { TopBar, AsideMenu },
   data() {
-    return {}
+    return {};
   }
-}
+};
 </script>
 <style >
 * {
-  font-family: 'Microsoft YaHei';
+  font-family: "Microsoft YaHei";
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -104,6 +103,8 @@ export default {
 }
 .aside {
   position: relative;
+  background: url("../photos/topbar.jpg");
+  background-size: cover;
   .bar {
     position: absolute;
     height: 100%;

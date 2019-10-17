@@ -15,32 +15,44 @@
   </div>
 </template>
 <script>
-import photo from 'ROOT/photos/test.jpg'
+import photo from "ROOT/photos/test.jpg";
 export default {
-  name: 'contentIMG',
+  name: "contentIMG",
   data() {
     return {
       photos: photo,
       num: 10,
       a: 10
-    }
+    };
   }
-}
+};
 </script>
 <style scoped lang='less'>
 .content {
-  padding: 0 5px;
+  padding-left: 5px;
   height: 100%;
   overflow: auto;
-  font-family: 'Microsoft YaHei';
-  background: rgba(255, 255, 255, 1);
+  font-family: "Microsoft YaHei";
+  background: #e4e4e4;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+  }
+  &::-webkit-scrollbar-thumb {
+    // background: #d5f0ff;
+    border-radius: 3px;
+    background: url("../../../photos/bar.jpg");
+    background-size: cover;
+  }
   .gap {
     margin-bottom: 10px;
   }
   .timeAddress {
     position: sticky;
     top: 0;
-    background: rgba(223, 223, 223, 0.8);
+    background: rgba(204, 204, 204, 0.8);
+    background-size: cover;
     padding: 4px 10px;
     width: 100%;
     display: flex;
@@ -54,7 +66,7 @@ export default {
     }
     .time {
       font-size: 11px;
-      color: rgba(122, 122, 122, 1);
+      color: rgb(59, 59, 59);
     }
   }
 
