@@ -7,8 +7,8 @@
       </router-link>
     </li>
     <li>
-      <router-link class="rectMax" :to="{ name: 'update'}">
-        <svg-icon class="setRect" iconClass="update"></svg-icon>
+      <router-link class="rectMax" :to="{ name: 'upload'}">
+        <svg-icon class="setRect" iconClass="upload"></svg-icon>
       </router-link>
     </li>
     <li>
