@@ -71,10 +71,8 @@ app.on('activate', () => {
         createWindow()
     }
 })
-ipcMain.on('open-child-window', (event, arg) => {
-    console.log(arg)
-    let child = new BrowserWindow({ parent: mainWindow })
-    child.on('closed', () => {
-        child = null
-    })
+
+// 文件拖拽
+ipcMain.on('upload', (event, filePath) => {
+    console.log(filePath)
 })
