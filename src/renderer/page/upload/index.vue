@@ -1,65 +1,145 @@
 <template>
   <div style="height:100%">
-    <div class="box" ref="drag">
-      <div class="content">
-        <svg-icon ref="logo" class="pos" iconClass="upload"></svg-icon>
-        <p class="text">拖拽&点击</p>
+    <div class="box horse" ref="drag">
+      <div class="dotted">
+        <div class="content">
+          <svg-icon ref="logo" class="pos" iconClass="upload"></svg-icon>
+          <p class="text">拖拽&点击</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { ipcRenderer } from 'electron'
+import { Drag } from '@/components/drag'
 export default {
   name: 'upload',
   data() {
-    return {}
+    return {
+      drag: null
+    }
   },
   mounted() {
-    console.log('chufa ')
-    this.dragEvent()
+    this.drag = new Drag(this.$refs['drag'], {
+      dragenter: this.dragenter,
+      drop: this.drop,
+      dragleave: this.dragleave,
+      dragover: this.dragover
+    })
+  },
+  beforeDestroy() {
+    this.drag.destory()
   },
   methods: {
     openAnimate() {
+      this.$refs['drag'].classList.add('runhorse')
       this.$refs['logo'].$el.classList.add('jump')
     },
     closeAnimate() {
+      this.$refs['drag'].classList.remove('runhorse')
       this.$refs['logo'].$el.classList.remove('jump')
     },
-    dragEvent() {
-      console.log(this.$refs['drag'])
-      //   当被拖动元素在目的地元素内时触发
-      this.$refs['drag'].ondragover = () => {
-        return false
-      }
+    //   当被拖动元素在目的地元素内时触发
+    dragover(e) {
+      e.preventDefault()
+    },
 
-      // 当被拖动元素没有放下就离开目的地元素时触发
-      // 在拖动操作完成时触发
-      this.$refs['drag'].ondragleave = () => {
-        this.closeAnimate()
-        return false
+    // 当被拖动元素没有放下就离开目的地元素时触发
+    dragleave(e) {
+      this.closeAnimate()
+      e.preventDefault()
+    },
+    // 当被拖动元素进入目的地元素所占据的屏幕空间时触发
+    dragenter(e) {
+      this.openAnimate()
+      e.preventDefault()
+    },
+    //  当元素或选中的文本在可释放目标上被释放时触发
+    drop(event) {
+      event.preventDefault()
+      this.closeAnimate()
+      let a = []
+      for (let f of event.dataTransfer.files) {
+        a.push(f)
       }
-      // 当被拖动元素进入目的地元素所占据的屏幕空间时触发
-      this.$refs['drag'].ondragenter = () => {
-        this.openAnimate()
-      }
-      //  当元素或选中的文本在可释放目标上被释放时触发
-      this.$refs['drag'].ondrop = event => {
-        event.preventDefault()
-        this.closeAnimate()
-        let a = []
-        for (let f of event.dataTransfer.files) {
-          a.push(f)
-        }
-        let b = a.map(e => e.path)
-        ipcRenderer.send('upload', b)
-        return false
-      }
+      let b = a.map(e => e.path)
+      ipcRenderer.send('upload', b)
     }
   }
 }
 </script>
 <style scoped lang='less'>
+// 蚂蚁线
+@keyframes shine {
+  0% {
+    background-position: -1px -1px;
+  }
+  100% {
+    background-position: -14px -14px;
+  }
+}
+
+@keyframes shine2 {
+  0% {
+    background-position: -14px -14px;
+  }
+  100% {
+    background-position: -1px -1px;
+  }
+}
+.dotted {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  left: 2px;
+  bottom: 2px;
+  background: rgba(247, 247, 247, 1);
+  pointer-events: none;
+}
+.runhorse {
+  &:before {
+    animation: shine2 0.5s infinite linear;
+  }
+  &:after {
+    animation: shine 0.5s infinite linear;
+  }
+}
+.horse {
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 2px;
+    right: 2px;
+    z-index: -1;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 4px,
+      rgba(160, 160, 160, 1) 4px,
+      rgba(160, 160, 160, 1) 10px;
+    );
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 2px;
+    bottom: 2px;
+    top: 0;
+    right: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 4px,
+      rgba(160, 160, 160, 1) 4px,
+      rgba(160, 160, 160, 1) 10px;
+    );
+  }
+}
+
 @keyframes jump {
   0% {
     transform: translateY(0);
@@ -79,8 +159,9 @@ export default {
   margin: 0 auto;
   height: 50vh;
   background: rgba(247, 247, 247, 1);
-  border: 3px dotted rgba(160, 160, 160, 1);
-  border-radius: 13px;
+  //   border: 3px dotted rgba(160, 160, 160, 1);
+  //   border-radius: 13px;
+  overflow: hidden;
   .content {
     position: absolute;
     top: 0;
