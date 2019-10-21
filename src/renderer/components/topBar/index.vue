@@ -1,6 +1,6 @@
 <template>
   <div class="fake-title-bar">
-    <div class="handle-bar" v-if="os === 'darwin'">
+    <div class="handle-bar" v-if="os === 'win32'">
       <!-- 如果是windows系统 就加上模拟的操作按钮-->
       <span class="handle-icon-box" @click="minS">
         <svg-icon class="color" iconClass="min"></svg-icon>
@@ -17,7 +17,7 @@
 </template>
 <script>
 import { remote } from 'electron'
-import { screenMax, screenMin, screenClose } from 'ROOT/event/app.js'
+import { screenMax, screenMin, screenClose } from '@/event/app.js'
 export default {
   name: 'top-bar',
   data() {
@@ -63,7 +63,6 @@ export default {
   height: 100%;
   width: 90px;
   align-items: center;
-  background: transparent;
   .red:hover {
     background: red;
     color: #fff;

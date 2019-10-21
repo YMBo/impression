@@ -1,10 +1,9 @@
 import { app, BrowserWindow, ipcMain, BrowserView } from 'electron'
-
-
-/**
- * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */
+require('electron-debug')()
+    /**
+     * Set `__static` path to static files in production
+     * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
+     */
 if (process.env.NODE_ENV !== 'development') {
     global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
@@ -38,13 +37,14 @@ function createWindow() {
         vibrancy: 'ultra-dark',
         // 窗口透明,如果设置了true，那么在win32环境下，isMaximized()总返回false
         transparent: false,
+        // titlebarstransparent:true,
         titleBarStyle: 'hidden',
         backgroundColor: '#fff',
         webPreferences: {
             devTools: true,
             backgroundThrottling: false,
-            // nodeIntegration: true,
-            // nodeIntegrationInWorker: true,
+            nodeIntegration: true,
+            nodeIntegrationInWorker: true,
         }
     })
     mainWindow.loadURL(winURL)
@@ -56,6 +56,7 @@ function createWindow() {
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
     })
+
 }
 
 app.on('ready', createWindow)
@@ -70,9 +71,4 @@ app.on('activate', () => {
     if (mainWindow === null) {
         createWindow()
     }
-})
-
-// 文件拖拽
-ipcMain.on('upload', (event, filePath) => {
-    console.log(filePath)
 })

@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import { ipcRenderer } from 'electron'
+import { putFile } from '@/event/ssh.js'
 import { Drag } from '@/components/drag'
 export default {
   name: 'upload',
@@ -63,8 +63,8 @@ export default {
       for (let f of event.dataTransfer.files) {
         a.push(f)
       }
-      let b = a.map(e => e.path)
-      ipcRenderer.send('upload', b)
+
+      console.log(putFile)
     }
   }
 }
