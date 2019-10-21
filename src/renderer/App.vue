@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <div class="blur" :style="`background-image:url(${bg})`"></div> -->
     <TopBar />
     <div class="main">
       <aside class="aside">
@@ -103,8 +102,8 @@ export default {
 }
 .aside {
   position: relative;
-  background: url("../photos/topbar.jpg");
-  background-size: cover;
+  // background: url("../photos/topbar.jpg");
+  // background-size: cover;
   .bar {
     position: absolute;
     height: 100%;

@@ -53,8 +53,8 @@ export default {
   width: 100%;
   height: 30px;
   line-height: 30px;
-  background: url("../../../photos/topbar.jpg");
-  background-size: cover;
+  // background: url("../../../photos/topbar.jpg");
+  // background-size: cover;
 }
 .handle-bar {
   position: absolute;
@@ -62,7 +62,6 @@ export default {
   top: 0;
   display: flex;
   justify-content: flex-end;
-  height: 100%;
   width: 90px;
   align-items: center;
   background: transparent;
