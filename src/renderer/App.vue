@@ -102,8 +102,6 @@ export default {
 }
 .aside {
   position: relative;
-  // background: url("../photos/topbar.jpg");
-  // background-size: cover;
   .bar {
     position: absolute;
     height: 100%;
