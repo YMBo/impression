@@ -53,7 +53,10 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "fs-extra": "^8.1.0",
+        "lowdb": "^1.0.0",
         "ssh2-utils": "^1.0.28",
+        "view-design": "^4.0.2",
         "vue": "^2.5.16",
         "vue-electron": "^1.0.6",
         "vue-router": "^3.0.1",
@@ -64,6 +67,7 @@
         "ajv": "^6.5.0",
         "babel-core": "^6.26.3",
         "babel-loader": "^7.1.4",
+        "babel-plugin-import": "^1.12.2",
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-preset-env": "^1.7.0",
         "babel-preset-stage-0": "^6.24.1",

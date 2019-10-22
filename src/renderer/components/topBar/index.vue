@@ -16,13 +16,8 @@
   </div>
 </template>
 <script>
-<<<<<<< HEAD
 import { remote } from "electron";
-import { screenMax, screenMin, screenClose } from "ROOT/event/app.js";
-=======
-import { remote } from 'electron'
-import { screenMax, screenMin, screenClose } from '@/event/app.js'
->>>>>>> d685f6a04d65328df9be855269c15027f3606d67
+import { screenMax, screenMin, screenClose } from "@/event/app.js";
 export default {
   name: "top-bar",
   data() {

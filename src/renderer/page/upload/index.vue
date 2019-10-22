@@ -63,8 +63,7 @@ export default {
       for (let f of event.dataTransfer.files) {
         a.push(f);
       }
-
-      console.log(putFile);
+      putFile();
     }
   }
 };
@@ -119,7 +118,7 @@ export default {
       transparent,
       transparent 4px,
       rgba(160, 160, 160, 1) 4px,
-      rgba(160, 160, 160, 1) 10px;
+      rgba(160, 160, 160, 1) 10px
     );
   }
   &:after {
@@ -135,7 +134,7 @@ export default {
       transparent,
       transparent 4px,
       rgba(160, 160, 160, 1) 4px,
-      rgba(160, 160, 160, 1) 10px;
+      rgba(160, 160, 160, 1) 10px
     );
   }
 }
