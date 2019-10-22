@@ -32,19 +32,20 @@ function createWindow() {
         // 创建一个没有顶部工具栏，没有border窗口
         frame: false,
         // 即刻相册
-        title: '印象时刻',
+        // title: '印象时刻',
         // 毛玻璃效果，仅macOS有效
         vibrancy: 'ultra-dark',
         // 窗口透明,如果设置了true，那么在win32环境下，isMaximized()总返回false
         transparent: false,
+        hasShadow: true,
         // titlebarstransparent:true,
         titleBarStyle: 'hidden',
-        backgroundColor: '#fff',
+        // backgroundColor: '#ff00005c',
         webPreferences: {
             devTools: true,
             backgroundThrottling: false,
-            nodeIntegration: true,
-            nodeIntegrationInWorker: true,
+            // nodeIntegration: true,
+            // nodeIntegrationInWorker: true,
         }
     })
     mainWindow.loadURL(winURL)
@@ -58,6 +59,7 @@ function createWindow() {
     })
 
 }
+// console.log(app.getPath('userData'))
 
 app.on('ready', createWindow)
 

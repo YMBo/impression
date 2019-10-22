@@ -19,8 +19,9 @@ function putFile() {
         console.log(stderr);
     });
 }
-let a = '2019年10月1日-2019年10月31日'
-let reg = /(\d+)年([^-]+)/g
+let a = '2019年10月1日-2019年10月31日';
+let reg = /(d+年[^-]*)/g;
+console.log(reg.exec(a))
 export {
     putFile
 }

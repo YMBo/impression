@@ -6,6 +6,16 @@ import store from './store'
 import '@/components/icons'
 
 
+import { Button, Form, FormItem, Input, Divider, Icon } from 'view-design';
+import 'view-design/dist/styles/iview.css';
+Vue.component('Button', Button);
+Vue.component('Form', Form);
+Vue.component('FormItem', FormItem);
+Vue.component('Input', Input);
+Vue.component('Divider', Divider);
+Vue.component('Icon', Icon);
+
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.config.productionTip = false
 

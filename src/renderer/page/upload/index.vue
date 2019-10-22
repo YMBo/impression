@@ -63,8 +63,7 @@ export default {
       for (let f of event.dataTransfer.files) {
         a.push(f)
       }
-
-      console.log(putFile)
+      putFile()
     }
   }
 }
