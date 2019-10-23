@@ -20,41 +20,41 @@
 </template>
 <script>
 export default {
-  name: "AsideMenu",
+  name: 'AsideMenu',
   data() {
     return {
       top: 0
-    };
+    }
   },
   computed: {
     allLi() {
-      return [...this.$refs["aside"].children].filter(v => v.nodeName == "LI");
+      return [...this.$refs['aside'].children].filter(v => v.nodeName == 'LI')
     }
   },
   methods: {
     move(event) {
-      let eventNode = this.findParent(event.target, this.$refs["aside"], "LI");
+      let eventNode = this.findParent(event.target, this.$refs['aside'], 'LI')
       if (eventNode) {
-        this.$refs["bar"].classList.remove("light");
-        let $ = eventNode;
-        this.allLi.forEach(e => e.classList.remove("current"));
-        this.top = $.offsetTop;
-        $.classList.add("current");
-        this.$refs["bar"].classList.add("light");
+        this.$refs['bar'].classList.remove('light')
+        let $ = eventNode
+        this.allLi.forEach(e => e.classList.remove('current'))
+        this.top = $.offsetTop
+        $.classList.add('current')
+        this.$refs['bar'].classList.add('light')
       }
     },
     findParent(current, parent, targetName) {
-      let cb = current;
+      let cb = current
       while (cb !== parent) {
         if (cb.nodeName == targetName) {
-          return cb;
+          return cb
         }
-        cb = cb.parentNode;
+        cb = cb.parentNode
       }
-      return false;
+      return false
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @keyframes light {
@@ -62,7 +62,7 @@ export default {
     box-shadow: 0 0 34px 0 #007eff;
   }
   100% {
-    box-shadow: 0 0 34px 5px #007eff;
+    box-shadow: 0 0 34px 3px #007eff;
   }
 }
 .menu {
@@ -82,7 +82,7 @@ export default {
     border-radius: 20px;
     transition: all 0.3s ease-out;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       height: 20px;
       left: 0;

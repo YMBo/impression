@@ -15,36 +15,39 @@
   </div>
 </template>
 <script>
-import photo from "ROOT/photos/test.jpg";
+import photo from 'ROOT/photos/test.jpg'
 export default {
-  name: "contentIMG",
+  name: 'contentIMG',
   data() {
     return {
       photos: photo,
       num: 10,
       a: 10
-    };
+    }
   }
-};
+}
 </script>
+<style>
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+}
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 3px;
+  /* background: url("../../../photos/bar.jpg"); */
+}
+</style>
 <style scoped lang='less'>
 .content {
   padding-left: 5px;
   height: 100%;
   overflow: auto;
-  font-family: "Microsoft YaHei";
+  font-family: 'Microsoft YaHei';
   background: #e4e4e4;
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-track {
-  }
-  &::-webkit-scrollbar-thumb {
-    // background: #d5f0ff;
-    border-radius: 3px;
-    background: url("../../../photos/bar.jpg");
-    background-size: cover;
-  }
+
   .gap {
     margin-bottom: 10px;
   }

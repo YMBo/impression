@@ -16,19 +16,22 @@
 </template>
 
 <script>
-import TopBar from "@/components/topBar";
-import AsideMenu from "@/components/asideMenu";
+import TopBar from '@/components/topBar'
+import AsideMenu from '@/components/asideMenu'
 export default {
-  name: "impression",
+  name: 'impression',
   components: { TopBar, AsideMenu },
   data() {
-    return {};
+    return {}
   }
-};
+}
 </script>
 <style >
+.main .ivu-form .ivu-form-item-label {
+  text-align: left;
+}
 * {
-  font-family: "Microsoft YaHei";
+  font-family: 'Microsoft YaHei';
   margin: 0;
   padding: 0;
   box-sizing: border-box;
