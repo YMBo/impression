@@ -22,7 +22,12 @@
       <!-- :rules="ruleValidate" -->
       <div class="w">
         <transition-group tag="div" name="list">
-          <div class="server" v-for="(item,index) in setting.server" :key="item.id" pose="visible">
+          <div
+            class="server"
+            v-for="(item,index) in setting.server"
+            :key="item.id+index"
+            pose="visible"
+          >
             <Form
               :ref="'form'+index"
               style="margin:20px 40px 0;font-size:12px;width: 600px;"
@@ -88,7 +93,11 @@
 </template>
 <script>
 import db from 'ROOT/database/datastore'
-import { remote } from 'electron'
+import {
+  importSettingFile,
+  exportSettingFile,
+  alertMessage
+} from '@/event/file'
 import os from 'os'
 export default {
   name: 'setting',
@@ -106,7 +115,21 @@ export default {
       }
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      let setting = db
+        .read()
+        .get('setting_server')
+        .value()
+      if (!setting) {
+        alertMessage('error', '配置信息读取失败！')
+      } else {
+        this.setting.server = setting
+      }
+    },
     remove(i) {
       if (this.setting.server.length == 1) {
         return
@@ -135,17 +158,17 @@ export default {
       }
       if (flag) {
         db.set('setting_server', this.setting.server).write()
+        alertMessage('info', '保存成功')
+        this.init()
       }
     },
     importFile() {
       // 第一个参数，作为main进程的模态框
-      remote.dialog.showOpenDialog(remote.BrowserWindow, {
-        title: '配置文件导入',
-        properties: ['openFile'],
-        filters: [{ name: 'JSON', extensions: ['json'] }]
-      })
+      importSettingFile('导入文件')
     },
-    exportFile() {}
+    exportFile() {
+      exportSettingFile('导出配置')
+    }
   }
 }
 </script>
