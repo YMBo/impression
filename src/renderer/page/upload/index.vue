@@ -11,62 +11,63 @@
   </div>
 </template>
 <script>
-import { putFile } from "@/event/ssh.js";
-import { Drag } from "@/components/drag";
+import { putFile } from '@/event/ssh.js'
+import { Drag } from '@/components/drag'
+import db from 'ROOT/database/datastore'
 export default {
-  name: "upload",
+  name: 'upload',
   data() {
     return {
       drag: null
-    };
+    }
   },
   mounted() {
-    this.drag = new Drag(this.$refs["drag"], {
+    this.drag = new Drag(this.$refs['drag'], {
       dragenter: this.dragenter,
       drop: this.drop,
       dragleave: this.dragleave,
       dragover: this.dragover
-    });
+    })
   },
   beforeDestroy() {
-    this.drag.destory();
+    this.drag.destory()
   },
   methods: {
     openAnimate() {
-      this.$refs["drag"].classList.add("runhorse");
-      this.$refs["logo"].$el.classList.add("jump");
+      this.$refs['drag'].classList.add('runhorse')
+      this.$refs['logo'].$el.classList.add('jump')
     },
     closeAnimate() {
-      this.$refs["drag"].classList.remove("runhorse");
-      this.$refs["logo"].$el.classList.remove("jump");
+      this.$refs['drag'].classList.remove('runhorse')
+      this.$refs['logo'].$el.classList.remove('jump')
     },
     //   当被拖动元素在目的地元素内时触发
     dragover(e) {
-      e.preventDefault();
+      e.preventDefault()
     },
 
     // 当被拖动元素没有放下就离开目的地元素时触发
     dragleave(e) {
-      this.closeAnimate();
-      e.preventDefault();
+      this.closeAnimate()
+      e.preventDefault()
     },
     // 当被拖动元素进入目的地元素所占据的屏幕空间时触发
     dragenter(e) {
-      this.openAnimate();
-      e.preventDefault();
+      this.openAnimate()
+      e.preventDefault()
     },
     //  当元素或选中的文本在可释放目标上被释放时触发
     drop(event) {
-      event.preventDefault();
-      this.closeAnimate();
-      let a = [];
+      event.preventDefault()
+      this.closeAnimate()
+      let a = []
       for (let f of event.dataTransfer.files) {
-        a.push(f);
+        a.push(f)
       }
-      putFile();
+      putFile(a)
     }
   }
-};
+}
 </script>
 <style scoped lang='less'>
 // 蚂蚁线
@@ -106,7 +107,7 @@ export default {
 }
 .horse {
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 0;
@@ -122,7 +123,7 @@ export default {
     );
   }
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     z-index: -1;
     left: 2px;

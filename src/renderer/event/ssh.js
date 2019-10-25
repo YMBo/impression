@@ -6,23 +6,50 @@
 
 
 
-var SSH2Utils = require('ssh2-utils')
+import SSH2Utils from 'ssh2-utils'
+import { getSetting } from 'ROOT/database/db'
+import { alertMessage } from './file'
 var ssh = new SSH2Utils();
-
 let server = { host: "39.106.27.181", username: "root", password: "yanbobo@123" };
+let setting_server = getSetting('setting_server')
 
-console.log('运行')
 
-function putFile() {
-    ssh.exec(server, 'ls', function(err, stdout, stderr) {
-        if (err) console.log(err);
-        console.log(stdout);
-        console.log(stderr);
-    });
+
+
+
+function putFile(file) {
+    let flag = null;
+    try {
+        flag = setting_server.server_disable
+        if (!flag) throw ('服务器配置读取失败！')
+    } catch (error) {
+        alertMessage('error', `错误信息：${error} 请重新配置服务器信息`)
+        return;
+    }
+    file.forEach(e => {
+        const pathFile = e.path
+        const name = e.name
+        try {
+            setting_server.server.forEach(m => {
+                let { ip: host, password, role: username, path: remoteFile } = m
+                remoteFile = remoteFile + '/' + name
+                ssh.putFileSudo({
+                    host,
+                    password,
+                    username
+                }, pathFile, remoteFile, function(err, server, conn) {
+                    if (err) console.log(err);
+
+                });
+            })
+        } catch (error) {
+            alertMessage('error', `错误信息：${error} 请重新配置服务器信息`)
+            return;
+        }
+    })
+
 }
-let a = '2019年10月1日-2019年10月31日';
-let reg = /(d+年[^-]*)/g;
-console.log(reg.exec(a))
+
 export {
     putFile
 }

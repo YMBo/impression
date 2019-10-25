@@ -6,7 +6,7 @@ import store from './store'
 import '@/components/icons'
 
 
-import { Button, Form, FormItem, Input, Divider, Icon } from 'view-design';
+import { Button, Form, FormItem, Input, Divider, Icon, Switch } from 'view-design';
 import 'view-design/dist/styles/iview.css';
 Vue.component('Button', Button);
 Vue.component('Form', Form);
@@ -14,6 +14,8 @@ Vue.component('FormItem', FormItem);
 Vue.component('Input', Input);
 Vue.component('Divider', Divider);
 Vue.component('Icon', Icon);
+Vue.component('i-switch', Switch);
+
 
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))

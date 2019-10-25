@@ -28,7 +28,6 @@ function importSettingFile(title) {
             })
         } else {
             alertMessage('error', '文件内容不匹配！ 请重试')
-
         }
 
     }).catch(err => {

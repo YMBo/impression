@@ -12,21 +12,26 @@
       <Button class="button" type="primary" size="small" @click="save">保存</Button>
     </div>
     <div class="setting_body">
-      <Divider
-        style="position:sticky;top:30px;background:#fff;z-index:10;color:#054792;box-shadow: 0 4px 15px -9px #ccc;"
-        orientation="left"
+      <div
+        style="position:sticky;top:30px;background:#fff;padding-bottom:10px;z-index:10;color:#054792;box-shadow: 0 4px 15px -9px #ccc;"
       >
-        <Icon type="logo-tux" />
-        <span class="icon">服务器&nbsp;</span>
-      </Divider>
+        <Divider orientation="left">
+          &nbsp;&nbsp;
+          <Icon type="logo-tux" />
+          <span class="icon">服务器&nbsp;</span>
+        </Divider>
+        <i-switch size="large" v-model="setting.server_disable">
+          <span slot="open">启用</span>
+          <span slot="close">禁用</span>
+        </i-switch>
+      </div>
       <!-- :rules="ruleValidate" -->
       <div class="w">
         <transition-group tag="div" name="list">
           <div
-            class="server"
+            :class="` server ${setting.server_disable?'enable':''} `"
             v-for="(item,index) in setting.server"
-            :key="item.id+index"
-            pose="visible"
+            :key="`${item.id}`"
           >
             <Form
               :ref="'form'+index"
@@ -63,6 +68,15 @@
                   placeholder="服务器密码"
                 />
               </FormItem>
+              <FormItem label="角色" prop="role">
+                <Input
+                  v-model="item.role"
+                  type="text"
+                  style="width:300px;"
+                  size="small"
+                  placeholder="登录角色，例如 root "
+                />
+              </FormItem>
               <FormItem label="备注">
                 <Input
                   password
@@ -93,6 +107,7 @@
 </template>
 <script>
 import db from 'ROOT/database/datastore'
+import { getSetting, setSetting } from 'ROOT/database/db'
 import {
   importSettingFile,
   exportSettingFile,
@@ -104,14 +119,14 @@ export default {
   data() {
     return {
       setting: {
-        server: [
-          { id: Math.random(), path: '', ip: '', password: '', comment: '' }
-        ]
+        server_disable: null,
+        server: []
       },
       ruleValidate: {
         path: [{ required: true, message: '必填项', trigger: 'blur' }],
         password: [{ required: true, message: '必填项', trigger: 'blur' }],
-        ip: [{ required: true, message: '必填项', trigger: 'blur' }]
+        ip: [{ required: true, message: '必填项', trigger: 'blur' }],
+        role: [{ required: true, message: '角色必填', trigger: 'blur' }]
       }
     }
   },
@@ -120,15 +135,15 @@ export default {
   },
   methods: {
     init() {
-      let setting = db
-        .read()
-        .get('setting_server')
-        .value()
-      if (!setting) {
-        alertMessage('error', '配置信息读取失败！')
-      } else {
-        this.setting.server = setting
+      let setting = getSetting('setting_server')
+      //   if (!setting) {
+      //     alertMessage('error', '配置信息读取失败！')
+      //   } else {
+      setting = {
+        server: setting.server || [],
+        server_disable: setting.server_disable || true
       }
+      this.setting = setting
     },
     remove(i) {
       if (this.setting.server.length == 1) {
@@ -157,7 +172,8 @@ export default {
         })
       }
       if (flag) {
-        db.set('setting_server', this.setting.server).write()
+        let { server, server_disable } = this.setting
+        setSetting('setting_server', { server, server_disable })
         alertMessage('info', '保存成功')
         this.init()
       }
@@ -173,12 +189,9 @@ export default {
 }
 </script>
 <style  lang='less'>
-// .setting_body {
-//   .ivu-divider-horizontal.ivu-divider-with-text-left:before,
-//   .ivu-divider-horizontal.ivu-divider-with-text-left:after {
-//     border-color: #054792;
-//   }
-// }
+.setting_body {
+  width: 100%;
+}
 .list-item {
   display: inline-block;
   margin-right: 10px;
@@ -199,16 +212,18 @@ export default {
 <style scoped lang='less'>
 .bg {
   height: 100%;
-  padding: 30px;
+  padding: 0 30px 30px 30px;
   overflow: auto;
+  .ivu-divider-horizontal.ivu-divider-with-text-left,
+  .ivu-divider-horizontal {
+    margin: 0;
+  }
   .save {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    z-index: 10;
     height: 30px;
-    top: 0;
     background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 11;
     > .button {
       float: right;
       font-size: 13px;
@@ -217,11 +232,16 @@ export default {
   }
   .w {
     width: 700px;
+    margin: 20px 100px;
+  }
+  .enable {
+    border: 1px dashed #7cade0 !important;
   }
   .server {
     position: relative;
     padding: 10px;
-    border: 1px dashed #ccc;
+    transition: all 0.3s;
+    border: 1px dashed #dcdee2;
     margin-bottom: 10px;
     .delete_button {
       position: absolute;

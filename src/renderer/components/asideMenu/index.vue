@@ -1,6 +1,6 @@
 <template>
   <ul ref="aside" class="menu" style="height:100%;text-align:center" @click="move">
-    <span ref="bar" class="mover-bar light" :style="`top:${top}px`"></span>
+    <span ref="bar" class="mover-bar light" :style="`transform:translateY(${top}px)`"></span>
     <li class="current">
       <router-link class="rectMax" :to="{ name: 'gallery'}">
         <svg-icon class="setRect" iconClass="home"></svg-icon>
@@ -80,7 +80,7 @@ export default {
     height: 50px;
     background: #3899ff;
     border-radius: 20px;
-    transition: all 0.3s ease-out;
+    transition: all 0.3s ease-in-out;
     &::after {
       content: '';
       position: absolute;

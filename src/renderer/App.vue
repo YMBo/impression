@@ -45,11 +45,11 @@ export default {
 }
 @keyframes switch-in {
   0% {
-    transform: translateY(-1000px) scale(0.8);
+    transform: translateY(-1000px) scale(0.9);
     opacity: 0;
   }
   50% {
-    transform: translateY(0) scale(0.8);
+    transform: translateY(0) scale(0.9);
   }
   100% {
     transform: scale(1);
@@ -70,7 +70,7 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
-    transform: scale(0.8);
+    transform: scale(0.9);
     opacity: 0;
   }
 }
