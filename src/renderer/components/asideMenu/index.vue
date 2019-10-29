@@ -1,7 +1,7 @@
 <template>
   <ul ref="aside" class="menu" style="height:100%;text-align:center" @click="move">
     <span ref="bar" class="mover-bar light" :style="`transform:translateY(${top}px)`"></span>
-    <li class="current">
+    <li class="current badge_self" :data-badge="successList.length">
       <router-link class="rectMax" :to="{ name: 'gallery'}">
         <svg-icon class="setRect" iconClass="home"></svg-icon>
       </router-link>
@@ -19,6 +19,8 @@
   </ul>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'AsideMenu',
   data() {
@@ -27,6 +29,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('upload', ['successList']),
     allLi() {
       return [...this.$refs['aside'].children].filter(v => v.nodeName == 'LI')
     }
@@ -57,6 +60,22 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.badge_self {
+  position: relative;
+  &:after {
+    content: attr(data-badge);
+    padding: 5px;
+    color: #fff;
+    line-height: 5px;
+    border-radius: 55px;
+    font-size: 10px;
+    background: #f36845;
+    transform: scale(0.8);
+    position: absolute;
+    right: 0px;
+    top: 2px;
+  }
+}
 @keyframes light {
   0% {
     box-shadow: 0 0 34px 0 #007eff;

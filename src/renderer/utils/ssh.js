@@ -9,6 +9,7 @@
 import SSH2Utils from 'ssh2-utils'
 import { getSetting } from 'ROOT/database/db'
 import { alertMessage } from './file'
+import store from '@/store/'
 var ssh = new SSH2Utils();
 let server = { host: "39.106.27.181", username: "root", password: "yanbobo@123" };
 let setting_server = getSetting('setting_server')
@@ -17,7 +18,8 @@ let setting_server = getSetting('setting_server')
 
 
 
-function putFile(file) {
+function putFile() {
+    let { fileList: file } = store.state.upload
     let flag = null;
     try {
         flag = setting_server.server_disable
@@ -26,21 +28,34 @@ function putFile(file) {
         alertMessage('error', `错误信息：${error} 请重新配置服务器信息`)
         return;
     }
+
     file.forEach(e => {
-        const pathFile = e.path
-        const name = e.name
+        const pathFile = e.file.path
+        const name = e.file.name
+        let id = e.id
         try {
             setting_server.server.forEach(m => {
                 let { ip: host, password, role: username, path: remoteFile } = m
                 remoteFile = remoteFile + '/' + name
-                ssh.putFileSudo({
-                    host,
-                    password,
-                    username
-                }, pathFile, remoteFile, function(err, server, conn) {
-                    if (err) console.log(err);
-
-                });
+                    // setTimeout(() => {
+                    //     console.log(id)
+                    //     store.commit('upload/CHANGE_PROCESS', {
+                    //         id,
+                    //         percent: 100
+                    //     })
+                    // }, 5000);
+                    // ssh.putFileSudo({
+                    //     host,
+                    //     password,
+                    //     username
+                    // }, pathFile, remoteFile, function(err, server, conn) {
+                    //     if (err) console.log(err);
+                    //     console.log(id)
+                    //     store.commit('upload/CHANGE_PROCESS', {
+                    //         id,
+                    //         percent: 100
+                    //     })
+                    // });
             })
         } catch (error) {
             alertMessage('error', `错误信息：${error} 请重新配置服务器信息`)

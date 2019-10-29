@@ -1,6 +1,24 @@
 <template>
-  <div style="height:100%">
-    <div class="box horse" ref="drag">
+  <div style="height:100%;position:relative">
+    <!-- 图片上传预览区 -->
+    <div v-if="isUpload" class="preview">
+      <transition-group name="move" tag="ul">
+        <li v-for="(item,index) in fileList" :key="index" class>
+          <!-- :style="`animation-delay:${index/10}s`" -->
+          <img :src="getUrl(item.file)" />
+          <div class="mes">
+            <div>
+              <span>{{item.file.name}}</span>
+            </div>
+            <div>
+              <div class="c">{{(item.file.size/1024/1024).toFixed(2)}}M</div>
+              <Progress :percent="item.percent" :stroke-width="4" :status="item.status" hide-info />
+            </div>
+          </div>
+        </li>
+      </transition-group>
+    </div>
+    <div :class="`box horse ${isUpload?'moveRight':''}`" ref="drag">
       <div class="dotted">
         <div class="content">
           <svg-icon ref="logo" class="pos" iconClass="upload"></svg-icon>
@@ -11,14 +29,25 @@
   </div>
 </template>
 <script>
-import { putFile } from '@/event/ssh.js'
+import { putFile } from '@/utils/ssh.js'
+import { getFileUrl } from '@/utils/img.js'
+import { flatDir } from '@/utils/common.js'
 import { Drag } from '@/components/drag'
 import db from 'ROOT/database/datastore'
+import { mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'upload',
+  computed: {
+    ...mapState('upload', ['fileList']),
+    isUpload() {
+      return Boolean(this.fileList.length)
+    }
+  },
   data() {
     return {
-      drag: null
+      drag: null,
+      files: []
     }
   },
   mounted() {
@@ -33,6 +62,10 @@ export default {
     this.drag.destory()
   },
   methods: {
+    ...mapMutations('upload', ['ADD_LIST']),
+    getUrl(file) {
+      return getFileUrl(file)
+    },
     openAnimate() {
       this.$refs['drag'].classList.add('runhorse')
       this.$refs['logo'].$el.classList.add('jump')
@@ -60,16 +93,95 @@ export default {
     drop(event) {
       event.preventDefault()
       this.closeAnimate()
-      let a = []
-      for (let f of event.dataTransfer.files) {
-        a.push(f)
-      }
-      putFile(a)
+      console.log(event.dataTransfer.files)
+      let all = [...event.dataTransfer.files]
+      let length = this.fileList.length
+      flatDir(all)
+      //   let files = all.map((e, i) => {
+      //     if (isDir(e)) {
+      //       console.log(isDir(e))
+      //       return
+      //     }
+      //     return {
+      //       id: i + length,
+      //       file: all[i],
+      //       status: 'active',
+      //       err: null,
+      //       percent: 0
+      //     }
+      //   })
+      this.ADD_LIST({
+        data: files
+      })
+      //   putFile()
     }
   }
 }
 </script>
 <style scoped lang='less'>
+.move-enter-active,
+.move-leave-active {
+  transition: all 2s;
+}
+.move-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.move-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+@keyframes uploadAnimation {
+  form {
+    transform: translateX(-10px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.an {
+  animation: uploadAnimation 0.2s ease-in;
+  animation-fill-mode: forwards;
+}
+.preview {
+  width: 260px;
+  padding: 15px;
+  position: absolute;
+  overflow: auto;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  ul {
+    list-style: none;
+    li {
+      font-size: 12px;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start;
+      margin: 5px 0;
+      box-shadow: 0 0 20px 0 #dadada;
+      border-radius: 3px;
+      padding-right: 10px;
+      //   transform: translateX(-10px);
+      > .mes {
+        width: 190px;
+        padding-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .c {
+          font-size: 10px;
+          text-align: right;
+        }
+      }
+      > img {
+        height: 50px;
+        width: 50px;
+      }
+    }
+  }
+}
 // 蚂蚁线
 @keyframes shine {
   0% {
@@ -106,6 +218,10 @@ export default {
   }
 }
 .horse {
+  transition: all 0.3s ease-in;
+  &.moveRight {
+    transform: translateY(-50%) translate(100px, 0);
+  }
   &:before {
     content: '';
     position: absolute;

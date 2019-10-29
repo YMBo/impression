@@ -16,29 +16,29 @@
   </div>
 </template>
 <script>
-import { remote } from "electron";
-import { screenMax, screenMin, screenClose } from "@/event/app.js";
+import { remote } from 'electron'
+import { screenMax, screenMin, screenClose } from '@/utils/app.js'
 export default {
-  name: "top-bar",
+  name: 'top-bar',
   data() {
     return {
       os: process.platform,
       isMax: remote.getCurrentWindow().isMaximized()
-    };
+    }
   },
   methods: {
     maxS() {
-      this.isMax = screenMax();
-      console.log(this.isMax);
+      this.isMax = screenMax()
+      console.log(this.isMax)
     },
     minS() {
-      screenMin();
+      screenMin()
     },
     closeS() {
-      screenClose();
+      screenClose()
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .bar-icon {

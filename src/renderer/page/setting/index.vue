@@ -112,7 +112,7 @@ import {
   importSettingFile,
   exportSettingFile,
   alertMessage
-} from '@/event/file'
+} from '@/utils/file'
 import os from 'os'
 export default {
   name: 'setting',
