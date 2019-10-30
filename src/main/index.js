@@ -44,8 +44,9 @@ function createWindow() {
         webPreferences: {
             devTools: true,
             backgroundThrottling: false,
-            // nodeIntegration: true,
-            // nodeIntegrationInWorker: true,
+            webSecurity: false
+                // nodeIntegration: true,
+                // nodeIntegrationInWorker: true,
         }
     })
     mainWindow.loadURL(winURL)

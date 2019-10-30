@@ -10,6 +10,8 @@ import SSH2Utils from 'ssh2-utils'
 import { getSetting } from 'ROOT/database/db'
 import { alertMessage } from './file'
 import store from '@/store/'
+
+const nativeImage = require('electron').nativeImage;
 var ssh = new SSH2Utils();
 let server = { host: "39.106.27.181", username: "root", password: "yanbobo@123" };
 let setting_server = getSetting('setting_server')
@@ -17,6 +19,30 @@ let setting_server = getSetting('setting_server')
 
 
 
+function readFile() {
+    console.log('触发')
+    let remoteFile = '/home/yangmingbo/1.jpg'
+    return new Promise((resolve, reject) => {
+        ssh.streamReadFileSudo(server, remoteFile, function(err, stdout, server, conn) {
+            let a = ''
+            stdout.on('data', (c) => {
+                console.log(c)
+                a = a + c
+            })
+            stdout.on('close', function() {
+                // var image = nativeImage.createFromBuffer(a);
+                // console.log(image)
+                let buffer = new Buffer(a)
+                let blob = new Blob([buffer], { type: 'image/*' })
+                    // 创建blob链接
+                let src = URL.createObjectURL(blob)
+                resolve(src)
+                return
+                conn.end();
+            });
+        })
+    })
+}
 
 function putFile() {
     let { fileList: file } = store.state.upload
@@ -28,7 +54,6 @@ function putFile() {
         alertMessage('error', `错误信息：${error} 请重新配置服务器信息`)
         return;
     }
-
     file.forEach(e => {
         const pathFile = e.file.path
         const name = e.file.name
@@ -37,6 +62,7 @@ function putFile() {
             setting_server.server.forEach(m => {
                 let { ip: host, password, role: username, path: remoteFile } = m
                 remoteFile = remoteFile + '/' + name
+                console.log(remoteFile)
                     // setTimeout(() => {
                     //     console.log(id)
                     //     store.commit('upload/CHANGE_PROCESS', {
@@ -66,5 +92,6 @@ function putFile() {
 }
 
 export {
-    putFile
+    putFile,
+    readFile
 }

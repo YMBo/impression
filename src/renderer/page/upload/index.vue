@@ -1,5 +1,11 @@
 <template>
   <div style="height:100%;position:relative">
+    <!-- <img
+      src="/Users/admin/Desktop/a.jpg"
+      data-live-photo="../../../static/IMG_4316.MOV"
+      data-live-photo-still-image-time="1.71"
+    />-->
+    <img :src="src" width="100" height="100" />
     <!-- 图片上传预览区 -->
     <div v-if="isUpload" class="preview">
       <transition-group name="move" tag="ul">
@@ -29,13 +35,15 @@
   </div>
 </template>
 <script>
-import { putFile } from '@/utils/ssh.js'
+import { putFile, readFile } from '@/utils/ssh.js'
 import { getFileUrl } from '@/utils/img.js'
 import { flatDir } from '@/utils/common.js'
 import { Drag } from '@/components/drag'
 import db from 'ROOT/database/datastore'
+import LivePhotos from 'laphs'
 import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
+import nativeImage from 'electron'
 export default {
   name: 'upload',
   computed: {
@@ -47,10 +55,12 @@ export default {
   data() {
     return {
       drag: null,
+      src: '',
       files: []
     }
   },
   mounted() {
+    // LivePhotos.initialize()
     this.drag = new Drag(this.$refs['drag'], {
       dragenter: this.dragenter,
       drop: this.drop,
@@ -93,7 +103,6 @@ export default {
     drop(event) {
       event.preventDefault()
       this.closeAnimate()
-      console.log(event.dataTransfer.files)
       let all = [...event.dataTransfer.files]
       let length = this.fileList.length
       flatDir(all)
@@ -110,10 +119,14 @@ export default {
       //       percent: 0
       //     }
       //   })
-      this.ADD_LIST({
-        data: files
-      })
+      //   this.ADD_LIST({
+      //     data: files
+      //   })
       //   putFile()
+      readFile().then(r => {
+        this.src = r
+        console.log(r)
+      })
     }
   }
 }
