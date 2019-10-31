@@ -105,12 +105,12 @@ export default {
       this.closeAnimate()
       let all = [...event.dataTransfer.files]
       let length = this.fileList.length
-      flatDir(all)
+      //   flatDir(all)
       //   let files = all.map((e, i) => {
-      //     if (isDir(e)) {
-      //       console.log(isDir(e))
-      //       return
-      //     }
+      //     // if (isDir(e)) {
+      //     //   console.log(isDir(e))
+      //     //   return
+      //     // }
       //     return {
       //       id: i + length,
       //       file: all[i],

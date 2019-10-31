@@ -1,3 +1,9 @@
+/*
+ * @Author: YMBo
+ * @Date: 2019-10-23 09:47:27
+ * @Description:ssh 上传 预览等
+ * @FilePath: /src/renderer/utils/ssh.js
+ */
 // import SSH2Utils from 'ssh2-utils'
 
 // 安装ssh2-utils 这个包的时候，有个fs-extra.js的模块，这个模块有个依赖是graceful-fs.js  ，
@@ -10,40 +16,49 @@ import SSH2Utils from 'ssh2-utils'
 import { getSetting } from 'ROOT/database/db'
 import { alertMessage } from './file'
 import store from '@/store/'
+import { forHeic } from './img'
 
-const nativeImage = require('electron').nativeImage;
+
 var ssh = new SSH2Utils();
 let server = { host: "39.106.27.181", username: "root", password: "yanbobo@123" };
 let setting_server = getSetting('setting_server')
 
 
 
-
-function readFile() {
-    console.log('触发')
-    let remoteFile = '/home/yangmingbo/1.jpg'
+// 读取img文件，返回src用于展示
+function readFile(fileName) {
+    let remoteFile = '/home/yangmingbo/IMG_4316.HEIC'
+        // remoteFile = fileName
     return new Promise((resolve, reject) => {
-        ssh.streamReadFileSudo(server, remoteFile, function(err, stdout, server, conn) {
+        ssh.streamReadFile(server, remoteFile, function(err, stdout, server, conn) {
+            // 创建一个空的buffer对象
+            let buffer = Buffer.alloc(0)
+            let list = []
             let a = ''
             stdout.on('data', (c) => {
-                console.log(c)
+                list.push(c)
                 a = a + c
             })
             stdout.on('close', function() {
-                // var image = nativeImage.createFromBuffer(a);
-                // console.log(image)
-                let buffer = new Buffer(a)
+                buffer = Buffer.concat(list)
+
+                // console.log(a)
                 let blob = new Blob([buffer], { type: 'image/*' })
+                console.log(blob)
+                forHeic(blob).then(r => {
+                        let src = URL.createObjectURL(r)
+                        resolve(src)
+                    })
                     // 创建blob链接
-                let src = URL.createObjectURL(blob)
-                resolve(src)
-                return
+                    // let src = URL.createObjectURL(blob)
+                    // resolve(src)
                 conn.end();
             });
         })
     })
 }
 
+// put文件
 function putFile() {
     let { fileList: file } = store.state.upload
     let flag = null;
@@ -63,25 +78,18 @@ function putFile() {
                 let { ip: host, password, role: username, path: remoteFile } = m
                 remoteFile = remoteFile + '/' + name
                 console.log(remoteFile)
-                    // setTimeout(() => {
-                    //     console.log(id)
-                    //     store.commit('upload/CHANGE_PROCESS', {
-                    //         id,
-                    //         percent: 100
-                    //     })
-                    // }, 5000);
-                    // ssh.putFileSudo({
-                    //     host,
-                    //     password,
-                    //     username
-                    // }, pathFile, remoteFile, function(err, server, conn) {
-                    //     if (err) console.log(err);
-                    //     console.log(id)
-                    //     store.commit('upload/CHANGE_PROCESS', {
-                    //         id,
-                    //         percent: 100
-                    //     })
-                    // });
+                ssh.putFileSudo({
+                    host,
+                    password,
+                    username
+                }, pathFile, remoteFile, function(err, server, conn) {
+                    if (err) console.log(err);
+                    console.log(id)
+                    store.commit('upload/CHANGE_PROCESS', {
+                        id,
+                        percent: 100
+                    })
+                });
             })
         } catch (error) {
             alertMessage('error', `错误信息：${error} 请重新配置服务器信息`)
