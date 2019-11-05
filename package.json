@@ -52,7 +52,9 @@
         }
     },
     "dependencies": {
-        "axios": "^0.18.0",
+        "@pirxpilot/eviltransform": "^0.2.2",
+        "axios": "^0.18.1",
+        "exif-js": "^2.3.0",
         "fs-extra": "^8.1.0",
         "heic2any": "0.0.1",
         "laphs": "^1.0.0",

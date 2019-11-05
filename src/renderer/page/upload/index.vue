@@ -36,7 +36,8 @@
 </template>
 <script>
 import { putFile, readFile } from '@/utils/ssh.js'
-import { getFileUrl } from '@/utils/img.js'
+import { getFileUrl, getExif } from '@/utils/img.js'
+import { isDir } from '@/utils/common.js'
 import { flatDir } from '@/utils/common.js'
 import { Drag } from '@/components/drag'
 import db from 'ROOT/database/datastore'
@@ -105,20 +106,22 @@ export default {
       this.closeAnimate()
       let all = [...event.dataTransfer.files]
       let length = this.fileList.length
-      //   flatDir(all)
-      //   let files = all.map((e, i) => {
-      //     // if (isDir(e)) {
-      //     //   console.log(isDir(e))
-      //     //   return
-      //     // }
-      //     return {
-      //       id: i + length,
-      //       file: all[i],
-      //       status: 'active',
-      //       err: null,
-      //       percent: 0
-      //     }
-      //   })
+      flatDir(all)
+      console.log(all)
+      let files = all.map((e, i) => {
+        if (isDir(e.path)) {
+          console.log(isDir(e.path))
+          return
+        }
+        return {
+          id: i + length,
+          file: e,
+          status: 'active',
+          err: null,
+          percent: 0,
+          location: getExif(e)
+        }
+      })
       //   this.ADD_LIST({
       //     data: files
       //   })

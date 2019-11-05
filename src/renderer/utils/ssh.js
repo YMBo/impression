@@ -44,14 +44,14 @@ function readFile(fileName) {
 
                 // console.log(a)
                 let blob = new Blob([buffer], { type: 'image/*' })
-                console.log(blob)
                 forHeic(blob).then(r => {
-                        let src = URL.createObjectURL(r)
-                        resolve(src)
-                    })
-                    // 创建blob链接
-                    // let src = URL.createObjectURL(blob)
-                    // resolve(src)
+                    let src = URL.createObjectURL(r)
+                    resolve(src)
+                })
+                // 创建blob链接
+                let src = URL.createObjectURL(blob)
+                resolve(src)
+
                 conn.end();
             });
         })
@@ -77,14 +77,12 @@ function putFile() {
             setting_server.server.forEach(m => {
                 let { ip: host, password, role: username, path: remoteFile } = m
                 remoteFile = remoteFile + '/' + name
-                console.log(remoteFile)
                 ssh.putFileSudo({
                     host,
                     password,
                     username
                 }, pathFile, remoteFile, function(err, server, conn) {
                     if (err) console.log(err);
-                    console.log(id)
                     store.commit('upload/CHANGE_PROCESS', {
                         id,
                         percent: 100

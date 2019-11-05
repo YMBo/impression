@@ -11,6 +11,7 @@ function getSetting(key) {
 function setSetting(key, value) {
     return db.set(key, value).write()
 }
+
 export {
     getSetting,
     setSetting
