@@ -40,7 +40,7 @@ import { getFileUrl, getExif } from '@/utils/img.js'
 import { isDir } from '@/utils/common.js'
 import { flatDir } from '@/utils/common.js'
 import { Drag } from '@/components/drag'
-import db from 'ROOT/database/datastore'
+import { formatData, promiseFormatData } from '@/utils/format.js'
 import LivePhotos from 'laphs'
 import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
@@ -107,19 +107,39 @@ export default {
       let all = [...event.dataTransfer.files]
       let length = this.fileList.length
       flatDir(all)
-      console.log(all)
       let files = all.map((e, i) => {
         if (isDir(e.path)) {
-          console.log(isDir(e.path))
           return
         }
+        getExif(e).then(r => {
+          //   数据存储
+
+          const { time, pos } = r
+          if (!pos) {
+            promiseFormatData({
+              ...r,
+              path: e.path,
+              size: e.size,
+              type: e.type,
+              name: e.name
+            })
+          } else {
+            formatData({
+              ...r,
+              path: e.path,
+              size: e.size,
+              type: e.type,
+              name: e.name
+            })
+          }
+        })
         return {
           id: i + length,
           file: e,
           status: 'active',
           err: null,
-          percent: 0,
-          location: getExif(e)
+          percent: 0
+          //   location: getExif(e)
         }
       })
       //   this.ADD_LIST({

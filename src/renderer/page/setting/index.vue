@@ -106,7 +106,6 @@
   </div>
 </template>
 <script>
-import db from 'ROOT/database/datastore'
 import { getSetting, setSetting } from 'ROOT/database/db'
 import {
   importSettingFile,

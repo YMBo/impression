@@ -12,7 +12,19 @@ if (process.type !== 'renderer') {
         fs.mkdirpSync(STORE_PATH)
     }
 }
+
+// setting的配置文件
 const setting_path = path.join(STORE_PATH, '/setting.json')
+
+// 图片列表的配置文件
+const image_book_path = path.join(STORE_PATH, '/book.json')
+
+// 失信图片列表
+const promise_path = path.join(STORE_PATH, '/promise.json')
+
+
 export {
     setting_path,
+    image_book_path,
+    promise_path
 }

@@ -57,66 +57,87 @@ function forHeic(HEICBlobFile, quality = 0.1) {
 
 // 获取图片信息
 function getExif(img) {
-    EXIF.getData(img, function() {
-        let { lastModifiedDate } = img
-        let data = EXIF.getAllTags(this)
-            // 时间 、东经、北纬
-        let { DateTimeOriginal, GPSLatitude, GPSLongitude } = data
+    return new Promise((resolve, reject) => {
+        EXIF.getData(img, function() {
+            let { lastModifiedDate } = img
+            let data = EXIF.getAllTags(this)
+                // 时间 、东经、北纬
+            let { DateTimeOriginal, GPSLatitude, GPSLongitude } = data
 
-        // 如果exif信息中没有创建时间，那么就是用图片的lastModifiedDate作为创建时间
-        if (!DateTimeOriginal) {
-            DateTimeOriginal = lastModifiedDate ? formatDateTime(lastModifiedDate) : '0 0'
-        }
-        let E = 0
-        let N = 0
-        if (GPSLatitude || GPSLongitude) {
-            // 东经
-            E = GPSLatitude[0].valueOf() + GPSLatitude[1].valueOf() / 60 + GPSLatitude[2].valueOf() / 3600
-                // 北纬
-            N = GPSLongitude[0].valueOf() + GPSLongitude[1].valueOf() / 60 + GPSLongitude[2].valueOf() / 3600
-        }
-        // WGS-84 => GCJ-02
-        const GCJ = wgs2gcj(E, N)
+            // 如果exif信息中没有创建时间，那么就是用图片的lastModifiedDate作为创建时间
+            if (!DateTimeOriginal) {
+                DateTimeOriginal = lastModifiedDate ? formatDateTime(lastModifiedDate) : '0 0'
+            }
+            let E = undefined
+            let N = undefined
+            let location = undefined
+            if (GPSLatitude || GPSLongitude) {
+                // 东经
+                E = GPSLatitude[0].valueOf() + GPSLatitude[1].valueOf() / 60 + GPSLatitude[2].valueOf() / 3600
+                    // 北纬
+                N = GPSLongitude[0].valueOf() + GPSLongitude[1].valueOf() / 60 + GPSLongitude[2].valueOf() / 3600
 
-        let location = {
-            E: GCJ.lng,
-            N: GCJ.lat
-        }
-        console.log(location)
-
-        let reg = /([\d|:|-]+)\s([\d|:]+)/g
-        let d = reg.exec(DateTimeOriginal);
-        // 日期和时间 
-        let time = {
-            date: d[1],
-            time: d[2]
-        }
-        let pos = {}
-        getAdress(`${location.E},${location.N}`).then(r => {
-            const { data } = r
-            if (data.status == 1) {
-                const { addressComponent: l } = data.regeocode
-                pos = {
-                    // 国家
-                    country: l.country,
-
-                    // 区/县
-                    district: l.district,
-
-                    //市
-                    city: l.city,
-
-                    // 乡镇
-                    township: l.township,
-
-                    // 省
-                    province: l.province,
-
-                    // 商圈
-                    businessAreas: l.businessAreas[0] ? l.businessAreas[0].name : undefined
+                // WGS-84 => GCJ-02
+                const GCJ = wgs2gcj(E, N)
+                location = {
+                    E: GCJ.lng,
+                    N: GCJ.lat
                 }
             }
-            console.log(time, pos)
+
+            let reg = /([\d|:|-]+)\s([\d|:]+)/g
+            let d = reg.exec(DateTimeOriginal);
+            let y = /(\d{4}):(\d{2}:\d{2})/g.exec(d[1])
+                // 日期和时间 
+            let time = {
+                year: y[1],
+                date: y[2],
+                time: d[2]
+            }
+            let pos = undefined
+            if (!location) {
+                resolve({
+                    time,
+                    pos
+                })
+            } else {
+                getAdress(`${location.E},${location.N}`).then(r => {
+                    const { data } = r
+                    if (data.status == 1) {
+                        const { addressComponent: l } = data.regeocode
+                        pos = {
+                            // 国家
+                            country: l.country,
+
+                            // 区/县
+                            district: l.district,
+
+                            //市
+                            city: l.city.length ? l.city : '',
+
+                            // 乡镇
+                            township: l.township,
+
+                            // 省
+                            province: l.province,
+
+                            // 商圈
+                            businessAreas: l.businessAreas[0] ? l.businessAreas[0].name : undefined
+                        }
+                    }
+                    resolve({
+                        time,
+                        pos
+                    })
+                }).catch(r => {
+                    // 如果网络等原因没取到地址，则设地址为空，有网络自动取值
+                    resolve({
+                        time,
+                        pos: undefined
+                    })
+                })
+            }
+
         })
     })
 

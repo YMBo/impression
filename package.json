@@ -58,6 +58,7 @@
         "fs-extra": "^8.1.0",
         "heic2any": "0.0.1",
         "laphs": "^1.0.0",
+        "lodash-id": "^0.14.0",
         "lowdb": "^1.0.0",
         "ssh2-utils": "^1.0.28",
         "view-design": "^4.0.2",
