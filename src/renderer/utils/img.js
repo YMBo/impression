@@ -97,6 +97,7 @@ function getExif(img) {
             let pos = undefined
             if (!location) {
                 resolve({
+                    gps: false,
                     time,
                     pos
                 })
@@ -126,12 +127,14 @@ function getExif(img) {
                         }
                     }
                     resolve({
+                        gps: true,
                         time,
                         pos
                     })
                 }).catch(r => {
                     // 如果网络等原因没取到地址，则设地址为空，有网络自动取值
                     resolve({
+                        gps: true,
                         time,
                         pos: undefined
                     })

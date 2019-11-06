@@ -40,6 +40,7 @@ import { getFileUrl, getExif } from '@/utils/img.js'
 import { isDir } from '@/utils/common.js'
 import { flatDir } from '@/utils/common.js'
 import { Drag } from '@/components/drag'
+import { isLonline } from '@/utils/online'
 import { formatData, promiseFormatData } from '@/utils/format.js'
 import LivePhotos from 'laphs'
 import { mapMutations } from 'vuex'
@@ -107,15 +108,22 @@ export default {
       let all = [...event.dataTransfer.files]
       let length = this.fileList.length
       flatDir(all)
+      if (!isLonline()) {
+        new Notification('通知', {
+          body: '网络断开连接，只能进行本地备份，已开始备份'
+        })
+      }
       let files = all.map((e, i) => {
         if (isDir(e.path)) {
           return
         }
         getExif(e).then(r => {
           //   数据存储
+          const { time, pos, gps } = r
 
-          const { time, pos } = r
-          if (!pos) {
+          //   如果图片存在gps信息，但是却没有地理位置信息，那么可能是断网或者别的情况，那么环境允许的情况再获取
+          if (!pos && gps) {
+            //   如果没有地理位置，则存在失信名单里，失信 哈哈哈，等到联网再补充数据
             promiseFormatData({
               ...r,
               path: e.path,
@@ -123,15 +131,14 @@ export default {
               type: e.type,
               name: e.name
             })
-          } else {
-            formatData({
-              ...r,
-              path: e.path,
-              size: e.size,
-              type: e.type,
-              name: e.name
-            })
           }
+          formatData({
+            ...r,
+            path: e.path,
+            size: e.size,
+            type: e.type,
+            name: e.name
+          })
         })
         return {
           id: i + length,
@@ -139,7 +146,6 @@ export default {
           status: 'active',
           err: null,
           percent: 0
-          //   location: getExif(e)
         }
       })
       //   this.ADD_LIST({

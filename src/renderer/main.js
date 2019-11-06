@@ -1,10 +1,8 @@
 import Vue from 'vue'
-
 import App from './App'
 import router from './router'
 import store from './store'
 import '@/components/icons'
-
 
 import { Button, Form, FormItem, Input, Divider, Icon, Switch, Progress, Badge } from 'view-design';
 import 'view-design/dist/styles/iview.css';

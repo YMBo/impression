@@ -12,94 +12,133 @@
       <Button class="button" type="primary" size="small" @click="save">保存</Button>
     </div>
     <div class="setting_body">
-      <div
-        style="position:sticky;top:30px;background:#fff;padding-bottom:10px;z-index:10;color:#054792;box-shadow: 0 4px 15px -9px #ccc;"
-      >
-        <Divider orientation="left">
-          &nbsp;&nbsp;
-          <Icon type="logo-tux" />
-          <span class="icon">服务器&nbsp;</span>
-        </Divider>
-        <i-switch size="large" v-model="setting.server_disable">
-          <span slot="open">启用</span>
-          <span slot="close">禁用</span>
-        </i-switch>
-      </div>
-      <!-- :rules="ruleValidate" -->
-      <div class="w">
-        <transition-group tag="div" name="list">
-          <div
-            :class="` server ${setting.server_disable?'enable':''} `"
-            v-for="(item,index) in setting.server"
-            :key="`${item.id}`"
-          >
+      <div>
+        <div
+          style="position:sticky;top:30px;background:#fff;padding-bottom:10px;z-index:10;color:#054792;box-shadow: 0 4px 15px -9px #ccc;"
+        >
+          <Divider orientation="left">
+            &nbsp;&nbsp;
+            <Icon type="ios-basket-outline" />
+            <span class="icon">本地&nbsp;</span>
+          </Divider>
+          <i-switch size="large" v-model="localhost.disable">
+            <span slot="open">启用</span>
+            <span slot="close">禁用</span>
+          </i-switch>
+        </div>
+        <div class="w">
+          <div :class="` server ${localhost.disable?'enable':''} `">
             <Form
-              :ref="'form'+index"
+              ref="localhost"
               style="margin:20px 40px 0;font-size:12px;width: 600px;"
-              :model="item"
+              :model="localhost"
               :rules="ruleValidate"
               :label-width="150"
             >
-              <FormItem label="服务器存储路径" prop="path">
+              <FormItem label="本地存储路径" prop="path">
                 <Input
                   type="text"
-                  v-model="item.path"
+                  v-model="localhost.path"
                   style="width:300px;"
                   size="small"
                   placeholder="/home/a/b/c"
                 />
               </FormItem>
-              <FormItem label="服务器IP" prop="ip">
-                <Input
-                  type="text"
-                  v-model="item.ip"
-                  style="width:300px;"
-                  size="small"
-                  placeholder="服务器公网IP"
-                />
-              </FormItem>
-              <FormItem label="服务器密码" prop="password">
-                <Input
-                  password
-                  v-model="item.password"
-                  type="password"
-                  style="width:300px;"
-                  size="small"
-                  placeholder="服务器密码"
-                />
-              </FormItem>
-              <FormItem label="角色" prop="role">
-                <Input
-                  v-model="item.role"
-                  type="text"
-                  style="width:300px;"
-                  size="small"
-                  placeholder="登录角色，例如 root "
-                />
-              </FormItem>
-              <FormItem label="备注">
-                <Input
-                  password
-                  v-model="item.comment"
-                  type="textarea"
-                  style="width:300px;"
-                  size="small"
-                />
-              </FormItem>
-              <transition name="fade">
-                <Button
-                  v-if="setting.server.length!=1"
-                  class="delete_button"
-                  type="error"
-                  ghost
-                  @click="remove(index)"
-                >删除</Button>
-              </transition>
             </Form>
           </div>
-        </transition-group>
-        <div style="width:60%;margin:10px auto;">
-          <Button type="dashed" long @click="handleAdd" icon="md-add">添加服务器</Button>
+        </div>
+      </div>
+
+      <div>
+        <div
+          style="position:sticky;top:30px;background:#fff;padding-bottom:10px;z-index:10;color:#054792;box-shadow: 0 4px 15px -9px #ccc;"
+        >
+          <Divider orientation="left">
+            &nbsp;&nbsp;
+            <Icon type="logo-tux" />
+            <span class="icon">服务器&nbsp;</span>
+          </Divider>
+          <i-switch size="large" v-model="setting.server_disable">
+            <span slot="open">启用</span>
+            <span slot="close">禁用</span>
+          </i-switch>
+        </div>
+        <!-- :rules="ruleValidate" -->
+        <div class="w">
+          <transition-group tag="div" name="list">
+            <div
+              :class="` server ${setting.server_disable?'enable':''} `"
+              v-for="(item,index) in setting.server"
+              :key="`${item.id}`"
+            >
+              <Form
+                :ref="'form'+index"
+                style="margin:20px 40px 0;font-size:12px;width: 600px;"
+                :model="item"
+                :rules="ruleValidate"
+                :label-width="150"
+              >
+                <FormItem label="服务器存储路径" prop="path">
+                  <Input
+                    type="text"
+                    v-model="item.path"
+                    style="width:300px;"
+                    size="small"
+                    placeholder="/home/a/b/c"
+                  />
+                </FormItem>
+                <FormItem label="服务器IP" prop="ip">
+                  <Input
+                    type="text"
+                    v-model="item.ip"
+                    style="width:300px;"
+                    size="small"
+                    placeholder="服务器公网IP"
+                  />
+                </FormItem>
+                <FormItem label="服务器密码" prop="password">
+                  <Input
+                    password
+                    v-model="item.password"
+                    type="password"
+                    style="width:300px;"
+                    size="small"
+                    placeholder="服务器密码"
+                  />
+                </FormItem>
+                <FormItem label="角色" prop="role">
+                  <Input
+                    v-model="item.role"
+                    type="text"
+                    style="width:300px;"
+                    size="small"
+                    placeholder="登录角色，例如 root "
+                  />
+                </FormItem>
+                <FormItem label="备注">
+                  <Input
+                    password
+                    v-model="item.comment"
+                    type="textarea"
+                    style="width:300px;"
+                    size="small"
+                  />
+                </FormItem>
+                <transition name="fade">
+                  <Button
+                    v-if="setting.server.length!=1"
+                    class="delete_button"
+                    type="error"
+                    ghost
+                    @click="remove(index)"
+                  >删除</Button>
+                </transition>
+              </Form>
+            </div>
+          </transition-group>
+          <div style="width:60%;margin:10px auto;">
+            <Button type="dashed" long @click="handleAdd" icon="md-add">添加服务器</Button>
+          </div>
         </div>
       </div>
     </div>
@@ -117,6 +156,7 @@ export default {
   name: 'setting',
   data() {
     return {
+      localhost: {},
       setting: {
         server_disable: null,
         server: []
@@ -134,15 +174,15 @@ export default {
   },
   methods: {
     init() {
-      let setting = getSetting('setting_server')
+      this.setting = getSetting('setting_server')
+      this.localhost = getSetting('localhost')
       //   if (!setting) {
       //     alertMessage('error', '配置信息读取失败！')
       //   } else {
-      setting = {
-        server: setting.server || [],
-        server_disable: setting.server_disable || true
-      }
-      this.setting = setting
+      //   setting = {
+      //     server: setting.server || [],
+      //     server_disable: setting.server_disable || true
+      //   }
     },
     remove(i) {
       if (this.setting.server.length == 1) {
@@ -159,9 +199,27 @@ export default {
         comment: ''
       })
     },
-    save() {
+    localhostRule() {
+      return new Promise((resolve, reject) => {
+        //   如果禁用则通过
+        if (!this.localhost.disable) {
+          resolve(true)
+        } else {
+          this.$refs['localhost'].validate(valid => {
+            if (valid) {
+              resolve(true)
+            } else {
+              resolve(false)
+            }
+          })
+        }
+      })
+    },
+    async save() {
       let i = this.setting.server.length
       let flag = true
+
+      //   检测服务器参数符合要求
       for (let m = 0; m < i; m++) {
         let name = 'form' + m
         this.$refs[name][0].validate(valid => {
@@ -170,10 +228,16 @@ export default {
           }
         })
       }
-      if (flag) {
+      let flag2 = await this.localhostRule()
+      if (flag && flag2) {
         let { server, server_disable } = this.setting
-        setSetting('setting_server', { server, server_disable })
-        alertMessage('info', '保存成功')
+        try {
+          setSetting('setting_server', { server, server_disable })
+          setSetting('localhost', this.localhost)
+          alertMessage('info', '保存成功')
+        } catch (error) {
+          alertMessage('error', '保存失败')
+        }
         this.init()
       }
     },
