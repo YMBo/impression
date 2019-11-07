@@ -3,6 +3,7 @@ import LodashId from 'lodash-id'
 import FileSync from 'lowdb/adapters/FileSync'
 import { setting_path, image_book_path, promise_path } from './config'
 
+//  setting
 const adapter = new FileSync(setting_path)
 const setting_db = Datastore(adapter)
 setting_db.defaults({
@@ -23,7 +24,7 @@ const book_db = Datastore(adapter_book)
 book_db._.mixin(LodashId)
 book_db.defaults({}).write()
 
-// 失信图片列表，没有没有街道城市名称的
+// 失信图片列表，有GPS但没有街道城市名称的
 const adapter_promise = new FileSync(promise_path)
 const promise_db = Datastore(adapter_promise)
 promise_db._.mixin(LodashId)

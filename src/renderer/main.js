@@ -16,8 +16,6 @@ Vue.component('i-switch', Switch);
 Vue.component('Progress', Progress);
 Vue.component('Badge', Badge);
 
-
-
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.config.productionTip = false
 

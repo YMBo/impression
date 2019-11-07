@@ -1,7 +1,7 @@
 /*
  * @Author: YMBo
  * @Date: 2019-11-05 14:51:45
- * @LastEditTime: 2019-11-05 18:20:32
+ * @LastEditTime: 2019-11-07 10:58:09
  * @Description: 分类image信息
  * @FilePath: /印象时刻/src/renderer/utils/format.js
  */
@@ -14,7 +14,7 @@ function formatData(data) {
     delete data.time
     delete data.pos
     const { year, date } = time
-    setUpdateBook(`${year}.${date}`, {
+    return setUpdateBook(`${year}.${date}`, {
         ...pos,
         ...time,
         ...data
@@ -28,7 +28,7 @@ function promiseFormatData(data) {
     delete data.time
     delete data.pos
     const { year, date } = time
-    setUpdatePromise(`${year}.${date}`, {
+    return setUpdatePromise(`${year}.${date}`, {
         ...pos,
         ...time,
         ...data

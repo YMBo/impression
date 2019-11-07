@@ -5,7 +5,6 @@
       data-live-photo="../../../static/IMG_4316.MOV"
       data-live-photo-still-image-time="1.71"
     />-->
-    <img :src="src" width="100" height="100" />
     <!-- 图片上传预览区 -->
     <div v-if="isUpload" class="preview">
       <transition-group name="move" tag="ul">
@@ -37,8 +36,7 @@
 <script>
 import { putFile, readFile } from '@/utils/ssh.js'
 import { getFileUrl, getExif } from '@/utils/img.js'
-import { isDir } from '@/utils/common.js'
-import { flatDir } from '@/utils/common.js'
+import { isDir, flatDir } from '@/utils/common.js'
 import { Drag } from '@/components/drag'
 import { isLonline } from '@/utils/online'
 import { formatData, promiseFormatData } from '@/utils/format.js'
@@ -102,60 +100,61 @@ export default {
       e.preventDefault()
     },
     //  当元素或选中的文本在可释放目标上被释放时触发
-    drop(event) {
+    async drop(event) {
       event.preventDefault()
       this.closeAnimate()
       let all = [...event.dataTransfer.files]
-      let length = this.fileList.length
-      flatDir(all)
+      all = flatDir(all)
+      console.log(all)
       if (!isLonline()) {
         new Notification('通知', {
           body: '网络断开连接，只能进行本地备份，已开始备份'
         })
       }
-      let files = all.map((e, i) => {
+      let files = []
+      for (let i = 0; i < all.length; i++) {
+        let e = all[i].file
+        // 二级目录忽略
         if (isDir(e.path)) {
-          return
+          break
         }
-        getExif(e).then(r => {
-          //   数据存储
-          const { time, pos, gps } = r
-
-          //   如果图片存在gps信息，但是却没有地理位置信息，那么可能是断网或者别的情况，那么环境允许的情况再获取
-          if (!pos && gps) {
-            //   如果没有地理位置，则存在失信名单里，失信 哈哈哈，等到联网再补充数据
-            promiseFormatData({
-              ...r,
-              path: e.path,
-              size: e.size,
-              type: e.type,
-              name: e.name
-            })
-          }
-          formatData({
-            ...r,
+        let imageData = await getExif(e)
+        //   数据存储
+        const { time, pos, gps } = imageData
+        //   如果图片存在gps信息，但是却没有地理位置信息，那么可能是断网或者别的情况，那么环境允许的情况再获取
+        if (!pos && gps) {
+          //   如果没有地理位置，则存在失信名单里，失信 哈哈哈，等到联网再补充数据
+          promiseFormatData({
+            ...imageData,
             path: e.path,
             size: e.size,
             type: e.type,
             name: e.name
           })
+        }
+        let isRepeat = formatData({
+          ...imageData,
+          path: e.path,
+          size: e.size,
+          type: e.type,
+          name: e.name
         })
-        return {
+        if (isRepeat) {
+          break
+        }
+        files.push({
+          time,
           id: i + length,
           file: e,
           status: 'active',
           err: null,
           percent: 0
-        }
+        })
+      }
+      this.ADD_LIST({
+        data: files
       })
-      //   this.ADD_LIST({
-      //     data: files
-      //   })
-      //   putFile()
-      readFile().then(r => {
-        this.src = r
-        console.log(r)
-      })
+      putFile()
     }
   }
 }

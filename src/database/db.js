@@ -1,4 +1,19 @@
 import { setting_db, book_db, promise_db } from './datastore'
+
+// 是否重复图片
+function isRepeat(arr, obj) {
+    let flag = true;
+    arr.forEach(e => {
+        for (let i in e) {
+            if (i == 'id') { break; }
+            if (obj[i] != e[i]) {
+                flag = false
+                break;
+            }
+        }
+    })
+    return flag
+}
 // ------------------------------setting-----------------------------------
 // 获取setting配置
 function getSetting(key) {
@@ -44,6 +59,13 @@ function updateBook(key, callback) {
 }
 
 function setUpdateBook(key, value) {
+    // 如果有重复的就舍弃
+    let already = getImgId(key).value()
+    if (Array.isArray(already)) {
+        const flag = isRepeat(already, value)
+        if (flag) return flag;
+    }
+
     if (haskey(key)) {
         getImgId(key).insert(value).write()
     } else {
@@ -69,7 +91,13 @@ function setPromise(key, value) {
     return promise_db.set(key, value).write()
 }
 
+// 
 function setUpdatePromise(key, value) {
+    let already = getPromise(key).value()
+    if (Array.isArray(already)) {
+        const flag = isRepeat(already, value)
+        if (flag) return flag;
+    }
     if (promiseHas(key)) {
         getPromise(key).insert(value).write()
     } else {
