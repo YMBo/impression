@@ -53,7 +53,7 @@
     },
     "dependencies": {
         "@pirxpilot/eviltransform": "^0.2.2",
-        "axios": "^0.18.1",
+        "axios": "^0.21.1",
         "exif-js": "^2.3.0",
         "fs-extra": "^8.1.0",
         "heic2any": "0.0.1",
